@@ -1,0 +1,23 @@
+.badge {
+  margin: 40px auto;
+  display: block;
+  min-width: 200px;
+  width: 50%;
+}
+
+.income-expense-wrapper {
+  justify-content: center;
+  gap: 20px;
+}
+
+.wrapper {
+  padding-bottom: 100px;
+  position: relative;
+}
+
+.recent-transaction {
+  min-width: 400px;
+  max-width: 70%;
+  margin: 40px auto;
+  display: block;
+}

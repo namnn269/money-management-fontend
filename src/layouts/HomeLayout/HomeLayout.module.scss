@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+}
+
+.sidebar {
+  color: rgb(12, 41, 41);
+  flex: 2;
+  background-color: rgb(190, 190, 190);
+}
+
+.content {
+  flex: 5;
+  background-color: rgb(91, 133, 170);
+}

@@ -1,0 +1,28 @@
+.text {
+  color: #797979;
+  font-size: 18px;
+}
+
+.wrapper .active-icon {
+  display: none;
+}
+
+.icon {
+  display: flex;
+}
+
+.active {
+  .icon {
+    display: none;
+  }
+
+  .active-icon {
+    display: flex;
+  }
+
+  .text {
+    color: #1976d2;
+    font-size: 20px;
+    font-weight: 600;
+  }
+}
