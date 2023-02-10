@@ -19,7 +19,7 @@ const { default: createAxiosJwt } = require('./axiosClient');
 const transactionApi = {
   post: async (data, user, dispatch) => {
     dispatch(postTransStart());
-    const transAxios = createAxiosJwt(user, dispatch);
+    const transAxios = await createAxiosJwt(user, dispatch);
     try {
       const trans = await transAxios.post('/transactions', data);
       dispatch(postTransSuccess(trans));
@@ -64,7 +64,9 @@ const transactionApi = {
       const transAxios = createAxiosJwt(user, dispatch);
       const res = await transAxios.get('/transactions/total');
       return res;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   getRecentTrans: async (quantity, user, dispatch) => {
@@ -74,7 +76,9 @@ const transactionApi = {
         params: { quantity },
       });
       return res;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   delete: async (id, user, dispatch) => {

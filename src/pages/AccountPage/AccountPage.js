@@ -2,8 +2,8 @@ import { Card, Grid } from '@nextui-org/react';
 
 import ChangePassWordPage from '../ChangePassPage';
 import AvatarUpload from '~/features/AvatarUpload';
-import ConfirmEmail from '~/features/ConfirmEmail';
-import UpdateInfomation from '~/features/UpdateInfomation';
+import VerifyEmail from '~/features/VerifyEmail';
+// import UpdateInfomation from '~/features/UpdateInfomation';
 
 function AccountPage() {
   return (
@@ -20,12 +20,7 @@ function AccountPage() {
       </Grid>
       <Grid xs={12} sm={6}>
         <Card>
-          <ConfirmEmail />
-        </Card>
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <Card>
-          <UpdateInfomation />
+          <VerifyEmail />
         </Card>
       </Grid>
     </Grid.Container>

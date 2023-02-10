@@ -6,7 +6,9 @@ const routePaths = {
   account: '/account',
   login: '/login',
   signup: '/signup',
-  forgotpassword: '/forgot-password',
+  forgotPassword: '/forgot-password',
   changePassword: '/change-password',
+  verifyEmailResponse: '/verify-email-response',
+  notFound: '*',
 };
 export default routePaths;

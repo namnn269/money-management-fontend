@@ -10,6 +10,7 @@ const authSlice = createSlice({
     },
     register: {
       isFetching: false,
+      success: false,
       error: false,
       message: '',
     },
@@ -19,13 +20,25 @@ const authSlice = createSlice({
       success: false,
       message: '',
     },
+    updateInfo: {
+      isFetching: false,
+      success: false,
+      error: false,
+      message: '',
+    },
+    verifyEmail: {
+      isFetching: false,
+      success: false,
+      error: false,
+      message: '',
+    },
     updatePassword: {
       isFetching: false,
       success: false,
       error: false,
       message: '',
     },
-    updateInfo: {
+    resetPassword: {
       isFetching: false,
       success: false,
       error: false,
@@ -45,27 +58,29 @@ const authSlice = createSlice({
       state.login.isFetching = false;
       state.login.error = true;
     },
-
+    //////////////////////////////////////////
     registerStart: (state) => {
       state.register.isFetching = true;
-      state.register.message = '';
     },
-    registerSuccess: (state) => {
+    registerSuccess: (state, actions) => {
       state.register.isFetching = false;
+      state.register.success = true;
       state.register.error = false;
-      state.register.message = '';
-    },
-    registerError: (state, actions) => {
-      state.register.error = true;
-      state.register.isFetching = false;
       state.register.message = actions.payload.message;
     },
-    clearMsgRegister: (state) => {
+    registerError: (state, actions) => {
       state.register.isFetching = false;
+      state.register.success = false;
+      state.register.error = true;
+      state.register.message = actions.payload.message;
+    },
+    registerClear: (state) => {
+      state.register.isFetching = false;
+      state.register.success = false;
       state.register.error = false;
       state.register.message = '';
     },
-
+    //////////////////////////////////////////
     logoutStart: (state) => {
       state.logout.isFetching = true;
     },
@@ -80,7 +95,7 @@ const authSlice = createSlice({
       state.logout.error = true;
       state.logout.success = false;
     },
-
+    //////////////////////////////////////////
     updatePasswordStart: (state) => {
       state.updatePassword.isFetching = true;
     },
@@ -102,7 +117,7 @@ const authSlice = createSlice({
       state.updatePassword.error = false;
       state.updatePassword.message = '';
     },
-
+    //////////////////////////////////////////
     updateInfoStart: (state) => {
       state.updateInfo.isFetching = true;
     },
@@ -113,18 +128,57 @@ const authSlice = createSlice({
       state.updateInfo.success = true;
       state.updateInfo.error = false;
       state.updateInfo.message = 'Update successfully';
-      state.login.currentUser = {
-        ...currentUser,
-        email: updatedUser.email,
-        avatar: updatedUser.avatar,
-        roles: updatedUser.roles,
-      };
+      state.login.currentUser = { ...currentUser, ...updatedUser };
     },
     updateInfoError: (state, actions) => {
       state.updateInfo.isFetching = false;
       state.updateInfo.success = false;
       state.updateInfo.error = true;
       state.updateInfo.message = actions.payload;
+    },
+    //////////////////////////////////////////
+    verifyEmailStart: (state) => {
+      state.verifyEmail.isFetching = true;
+    },
+    verifyEmailSuccess: (state, actions) => {
+      state.verifyEmail.isFetching = false;
+      state.verifyEmail.success = true;
+      state.verifyEmail.error = false;
+      state.verifyEmail.message = actions.payload;
+    },
+    verifyEmailError: (state, actions) => {
+      state.verifyEmail.isFetching = false;
+      state.verifyEmail.success = false;
+      state.verifyEmail.error = true;
+      state.verifyEmail.message = actions.payload;
+    },
+    verifyEmailReset: (state) => {
+      state.verifyEmail.isFetching = false;
+      state.verifyEmail.success = false;
+      state.verifyEmail.error = false;
+      state.verifyEmail.message = '';
+    },
+    ////////////////////////////////////////////
+    resetPasswordStart: (state) => {
+      state.resetPassword.isFetching = true;
+    },
+    resetPasswordSuccess: (state, actions) => {
+      state.resetPassword.isFetching = false;
+      state.resetPassword.success = true;
+      state.resetPassword.error = false;
+      state.resetPassword.message = actions.payload;
+    },
+    resetPasswordError: (state, actions) => {
+      state.resetPassword.isFetching = false;
+      state.resetPassword.success = false;
+      state.resetPassword.error = true;
+      state.resetPassword.message = actions.payload;
+    },
+    resetPasswordClear: (state) => {
+      state.resetPassword.isFetching = false;
+      state.resetPassword.success = false;
+      state.resetPassword.error = false;
+      state.resetPassword.message = '';
     },
   },
 });
@@ -136,7 +190,7 @@ export const {
   registerStart,
   registerSuccess,
   registerError,
-  clearMsgRegister,
+  registerClear,
   logoutStart,
   logoutSuccess,
   logoutError,
@@ -147,6 +201,14 @@ export const {
   updateInfoStart,
   updateInfoSuccess,
   updateInfoError,
+  verifyEmailStart,
+  verifyEmailSuccess,
+  verifyEmailError,
+  verifyEmailReset,
+  resetPasswordStart,
+  resetPasswordSuccess,
+  resetPasswordError,
+  resetPasswordClear,
 } = authSlice.actions;
 
 export default authSlice.reducer;

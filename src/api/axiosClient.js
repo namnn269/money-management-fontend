@@ -2,13 +2,21 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { loginSuccess } from '~/redux/authSlice';
 
+let canFetch = true;
+let waitNewTokens = {};
+const delay = async (ms) => new Promise((res) => setTimeout(res, ms));
+const waitForGetRefreshToken = async () => {
+  if (!canFetch) {
+    await delay(100);
+    await waitForGetRefreshToken();
+  } else return;
+};
+
 const getRefreshToken = async (user) => {
   try {
     const response = await axios.post(
       '/auth/refresh-token',
-      {
-        refreshToken: user.refreshToken,
-      },
+      { refreshToken: user.refreshToken },
       { baseURL: process.env.REACT_APP_API_URL }
     );
     return response.data;
@@ -27,28 +35,39 @@ const createAxiosJwt = (user, dispatch) => {
     },
   });
 
-  axiosClient.interceptors.request.use(async (config) => {
-    const now = new Date().getTime() / 1000;
-    const expiration = jwtDecode(user?.accessToken).exp;
-    if (now > expiration) {
-      const newTokens = await getRefreshToken(user);
-      config.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
-      config.data = { refreshToken: newTokens.refreshToken };
-      dispatch?.(
-        loginSuccess({
-          ...user,
-          accessToken: newTokens.accessToken,
-          refreshToken: newTokens.refreshToken,
-        })
-      );
+  axiosClient.interceptors.request.use(
+    async (config) => {
+      if (!canFetch) {
+        await waitForGetRefreshToken();
+        config.headers['Authorization'] = `Bearer ${waitNewTokens.accessToken}`;
+        config.data = { refreshToken: waitNewTokens.refreshToken };
+      } else {
+        const now = new Date().getTime() / 1000;
+        const expiration = jwtDecode(user?.accessToken).exp;
+        if (now > expiration) {
+          canFetch = false;
+          const newTokens = (await getRefreshToken(user)) || waitNewTokens;
+          waitNewTokens = newTokens;
+          config.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
+          dispatch(
+            loginSuccess({
+              ...user,
+              accessToken: newTokens.accessToken,
+              refreshToken: newTokens.refreshToken,
+            })
+          );
+          canFetch = true;
+        }
+      }
+      return config;
+    },
+    (error) => {
+      console.log(error);
     }
-
-    return config;
-  });
+  );
 
   axiosClient.interceptors.response.use(
     (response) => {
-      // console.log(response);
       return response.data;
     },
     (error) => {

@@ -13,8 +13,10 @@ import TimelineRoundedIcon from '@mui/icons-material/TimelineRounded';
 
 import ItemButton from '~/components/ItemButton';
 import routePaths from '~/routePaths';
+import { useSelector } from 'react-redux';
 
 export default function ListItemsSidebar() {
+  const user = useSelector((state) => state.auth?.login?.currentUser);
   return (
     <List
       sx={{ width: '100%', maxWidth: 460, bgcolor: 'background.paper' }}
@@ -51,12 +53,14 @@ export default function ListItemsSidebar() {
         leftIcon={<HistoryIcon />}
         activeIcon={<ManageHistoryIcon color="primary" />}
       />
-      <ItemButton
-        to={routePaths.account}
-        content={'Account'}
-        leftIcon={<AccountCircleOutlinedIcon />}
-        activeIcon={<AccountCircleIcon color="primary" />}
-      />
+      {user && (
+        <ItemButton
+          to={routePaths.account}
+          content={'Account'}
+          leftIcon={<AccountCircleOutlinedIcon />}
+          activeIcon={<AccountCircleIcon color="primary" />}
+        />
+      )}
     </List>
   );
 }

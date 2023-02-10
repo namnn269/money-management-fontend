@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Container, Input, Spacer, Text } from '@nextui-org/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import authApi from '~/api/authApi';
+import LoadingIcon from '~/components/LoadingIcon';
 
 const passwordRegex =
   //   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*`])[0-9a-zA-Z~!@#$%^&*`]{8,}$/;
@@ -31,7 +33,7 @@ const schema = Yup.object().shape({
 
 /////////////////////////////////////////////////////////////////////////
 function ChangePassPage() {
-  const changePassword = useSelector((state) => state.auth.changePassword);
+  const updatePassword = useSelector((state) => state.auth.updatePassword);
   const user = useSelector((state) => state.auth.login.currentUser);
   const dispatch = useDispatch();
 
@@ -45,12 +47,13 @@ function ChangePassPage() {
   });
 
   const handleOnSubmit = (data) => {
-    authApi.changePassword(data, user, dispatch);
+    authApi.updatePassword(data, user, dispatch);
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)}>
+      {updatePassword.isFetching && <LoadingIcon />}
       <Container
         css={{ display: 'flex', flexDirection: 'column', padding: '$10' }}
       >
@@ -70,22 +73,41 @@ function ChangePassPage() {
           {...register('currentPassword')}
           type="password"
           label="Current password"
+          placeholder="Current password"
         />
         <Text css={{ color: 'red', fontSize: '12px' }}>
           {errors?.currentPassword?.message}
         </Text>
         <Spacer />
-        <Input {...register('newPassword1')} type="text" label="New password" />
+        <Input
+          {...register('newPassword1')}
+          type="password"
+          label="New password"
+          placeholder="New password"
+        />
         <Text css={{ color: 'red', fontSize: '12px' }}>
           {errors?.newPassword1?.message}
         </Text>
         <Spacer />
-        <Input {...register('newPassword2')} type="text" label="New password" />
+        <Input
+          {...register('newPassword2')}
+          type="password"
+          label="Confirm new password"
+          placeholder="Confirm new password"
+        />
         <Text css={{ color: 'red', fontSize: '12px' }}>
           {errors?.newPassword2?.message}
         </Text>
         <Spacer />
-        <Text>{changePassword?.isFetching ? 'loading' : ''}</Text>
+        <Text>{updatePassword?.isFetching ? 'loading' : ''}</Text>
+        <Text
+          css={{
+            color: updatePassword.success ? 'Green' : 'Red',
+            fontWeight: 'bold',
+          }}
+        >
+          {updatePassword?.message}
+        </Text>
         <Button type="submit" bordered>
           Change password
         </Button>

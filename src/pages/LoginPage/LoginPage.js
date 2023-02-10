@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -41,7 +40,6 @@ export default function SignIn() {
     resolver: yupResolver(schema),
     defaultValues: {
       username: '',
-      rememberme: false,
       password: '',
     },
   });
@@ -90,8 +88,6 @@ export default function SignIn() {
               {errors.password?.message}
             </Text>
 
-            <Checkbox {...register('rememberme')} color="primary" />
-            <span>Remember me</span>
             {isError && (
               <Text css={{ color: 'red', fontSize: '14px' }}>
                 Tên đăng nhập hoặc mật khẩu sai

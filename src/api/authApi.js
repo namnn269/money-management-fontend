@@ -20,8 +20,18 @@ const {
   updateInfoStart,
   updateInfoSuccess,
   updateInfoError,
+  verifyEmailStart,
+  verifyEmailSuccess,
+  verifyEmailError,
+  verifyEmailReset,
+  resetPasswordStart,
+  resetPasswordSuccess,
+  resetPasswordError,
+  resetPasswordClear,
+  registerClear,
 } = require('~/redux/authSlice');
 
+const timeToReset = 10000;
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 const authApi = {
@@ -31,38 +41,43 @@ const authApi = {
       const res = await axios.post('/auth/login', usernamePass, {
         baseURL: process.env.REACT_APP_API_URL,
       });
-      navigate('/');
       dispatch(loginSuccess(res.data));
+      navigate('/');
     } catch (error) {
       dispatch(loginError());
     }
   },
 
-  register: async (data, dispatch, navigate) => {
+  register: async (data, dispatch) => {
     dispatch(registerStart());
     try {
       const res = await axios.post('/auth/signup', data, {
         baseURL: process.env.REACT_APP_API_URL,
       });
-      dispatch(registerSuccess());
-      navigate('/login');
-      return res;
+      dispatch(registerSuccess(res.data));
+      return true;
     } catch (error) {
       dispatch(registerError(error.response.data));
+    } finally {
+      setTimeout(() => {
+        dispatch(registerClear());
+      }, timeToReset);
     }
   },
 
   logout: async (user, dispatch, navigate) => {
     dispatch(logoutStart());
-    const axiosJwt = createAxiosJwt(user, dispatch);
     try {
-      const logoutRes = await axiosJwt.post('/auth/logout', {
-        refreshToken: user.refreshToken,
-      });
+      const logoutRes = await axios.post(
+        '/auth/logout',
+        { refreshToken: user.refreshToken },
+        { baseURL: process.env.REACT_APP_API_URL }
+      );
       console.log(logoutRes);
       dispatch(logoutSuccess());
       dispatch(deleteAllCategories());
       dispatch(deleteAllTransactions());
+      localStorage.clear();
       navigate('/login');
     } catch (error) {
       dispatch(logoutError());
@@ -81,7 +96,7 @@ const authApi = {
     }
     setTimeout(() => {
       dispatch(updatePasswordReset());
-    }, 5000);
+    }, timeToReset);
   },
 
   updateInfo: async (data, user, dispatch) => {
@@ -90,9 +105,51 @@ const authApi = {
     try {
       const updatedUser = await axiosJwt.post('/auth/updateInfo', data);
       dispatch(updateInfoSuccess(updatedUser));
+      console.log(updatedUser);
     } catch (error) {
       console.log(error);
       dispatch(updateInfoError(error?.response?.data));
+    }
+  },
+
+  verifyEmail: async (email, user, dispatch) => {
+    dispatch(verifyEmailStart());
+    const axiosJwt = createAxiosJwt(user, dispatch);
+    try {
+      const res = await axiosJwt.post(
+        '/auth/verifyEmail',
+        {},
+        { params: { email } }
+      );
+      console.log(res);
+      dispatch(verifyEmailSuccess(res));
+    } catch (error) {
+      console.log(error);
+      dispatch(verifyEmailError(error.response.data));
+    } finally {
+      setTimeout(() => {
+        dispatch(verifyEmailReset());
+      }, timeToReset);
+    }
+  },
+
+  resetPassword: async (data, dispatch, navigate) => {
+    dispatch(resetPasswordStart());
+    try {
+      const res = await axios.post(
+        '/auth/resetPassword',
+        {},
+        { baseURL: process.env.REACT_APP_API_URL, params: data }
+      );
+      console.log(res);
+      dispatch(resetPasswordSuccess(res.data));
+    } catch (error) {
+      console.log(error);
+      dispatch(resetPasswordError(error.response.data));
+    } finally {
+      setTimeout(() => {
+        dispatch(resetPasswordClear());
+      }, timeToReset);
     }
   },
 };

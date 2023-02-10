@@ -20,7 +20,7 @@ const categorySlice = createSlice({
       state.post.success = true;
       state.post.error = false;
       state.list.push(actions.payload);
-      state.post.message = 'Add new category successfully!!!';
+      state.post.message = 'Save category successfully!!!';
     },
     postCategoryError: (state, actions) => {
       state.post.isFetching = false;
@@ -38,7 +38,7 @@ const categorySlice = createSlice({
       state.update.isFetching = false;
       state.update.success = true;
       state.update.error = false;
-      state.update.message = 'Update successfully!';
+      state.update.message = 'Save category successfully!!!';
       const index = state.list.findIndex(
         (category) => category.id === actions.payload.id
       );

@@ -45,9 +45,13 @@ export default function TableTransactions() {
     pageSize: 5,
     pageNo: 1,
   });
-  const callApi = () => {
+
+  const callApi = (pageNo) => {
+    pageNo && setPageParams({ ...pageParams, pageNo: 1 });
+    pageNo = pageNo ? pageNo : pageParams.pageNo;
     const data = {
       ...pageParams,
+      pageNo,
       categorySelectedIds: pageParams.categorySelectedIds.slice(1),
     };
     (async () => {
@@ -61,8 +65,7 @@ export default function TableTransactions() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    setPageParams({ ...pageParams, pageNo: 1 });
-    user && callApi();
+    user && callApi(1);
   };
 
   useEffect(() => {

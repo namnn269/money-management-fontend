@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
@@ -18,9 +18,8 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import authApi from '~/api/authApi';
-import { useEffect } from 'react';
-import { clearMsgRegister } from '~/redux/authSlice';
 import { defaultAvatar } from '~/configs/constant';
+import { useEffect } from 'react';
 
 const theme = createTheme();
 const avatar = defaultAvatar;
@@ -37,10 +36,12 @@ const schema = Yup.object({
 
 /////////////////////////////////////////////////////////////////
 export default function SignUp() {
-  const message = useSelector((state) => state.auth.register.message);
+  const signup = useSelector((state) => state.auth.register);
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -50,16 +51,13 @@ export default function SignUp() {
       password: '',
     },
   });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const handleSignup = (data) => {
-    authApi.register({ ...data, avatar }, dispatch, navigate);
+  const handleSignup = async (data) => {
+    authApi.register({ ...data, avatar }, dispatch);
   };
-
   useEffect(() => {
-    dispatch(clearMsgRegister());
-  }, []);
+    if (signup.success) reset();
+  }, [signup]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,11 +112,9 @@ export default function SignUp() {
                 <Text css={{ color: 'red', fontSize: '12px' }}>
                   {errors.password?.message}
                 </Text>
-                {message && (
-                  <Text css={{ color: 'red', fontSize: '14px' }}>
-                    {message}
-                  </Text>
-                )}
+                <Text css={{ color: 'red', fontSize: '14px' }}>
+                  {signup.message}
+                </Text>
               </Grid>
             </Grid>
             <Button

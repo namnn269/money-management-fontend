@@ -337,7 +337,12 @@ function FormAddNewTransaction({ transaction }) {
           )}
         />
         <Spacer />
-        {showMsg && <Text>{message}</Text>}
+        {showMsg && (
+          <>
+            <Text css={{ color: 'Green', fontWeight: 'bold' }}>{message}</Text>
+            <Spacer />
+          </>
+        )}
         <Button
           css={{
             margin: '0 auto',

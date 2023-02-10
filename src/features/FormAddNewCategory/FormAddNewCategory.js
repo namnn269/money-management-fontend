@@ -36,7 +36,7 @@ function FormAddNewCategory({ updateCategory }) {
     },
   });
 
-  const addNewState = useSelector((state) => state.categories.post);
+  const categoriesState = useSelector((state) => state.categories);
 
   const handleOnSubmit = (data) => {
     data = { ...data, categoryStatusId: categoryStatusId };
@@ -62,8 +62,6 @@ function FormAddNewCategory({ updateCategory }) {
       >
         {updateCategory ? 'UPDATE CATEGORY' : 'ADD NEW CATEGORY'}
       </Text>
-      {addNewState.success && showMsg && <Text>{addNewState.message}</Text>}
-      {addNewState.error && showMsg && <Text>{addNewState.message}</Text>}
       <Spacer />
       <Input aria-label="id" type={'hidden'} {...register} />
       <Controller
@@ -76,7 +74,6 @@ function FormAddNewCategory({ updateCategory }) {
             css={{ flexDirection: 'column' }}
             value={categoryStatusId}
             onChange={(e) => {
-              console.log(e);
               setCategoryStatusId(e);
             }}
           >
@@ -175,7 +172,6 @@ function FormAddNewCategory({ updateCategory }) {
       />
       <Spacer />
       <Text color="red">{errors.name?.message}</Text>
-
       {/* --------------------Color----------------- */}
       <Spacer />
       <Text
@@ -195,6 +191,17 @@ function FormAddNewCategory({ updateCategory }) {
           <Input {...field} aria-label="color" type="color" width="50%" />
         )}
       />
+      <Spacer />
+      {categoriesState.post.success && showMsg && (
+        <Text css={{ color: 'Green', fontWeight: 'bold' }}>
+          {categoriesState.post.message}
+        </Text>
+      )}
+      {categoriesState.post.error && showMsg && (
+        <Text css={{ color: 'Red', fontWeight: 'bold' }}>
+          {categoriesState.post.message}
+        </Text>
+      )}
       <Spacer />
       <Button
         css={{

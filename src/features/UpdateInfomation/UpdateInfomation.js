@@ -5,7 +5,6 @@ function UpdateInfomation() {
     <Container
       css={{ display: 'flex', flexDirection: 'column', padding: '$10' }}
     >
-      <Spacer />
       <Text
         h1
         size={20}
@@ -17,6 +16,7 @@ function UpdateInfomation() {
       >
         Update Infomation
       </Text>
+      <Spacer />
       <Input placeholder="Fullname" type="text" label="Fullname" />
       <Spacer />
       <Input placeholder="Address" type="text" label="Address" />
