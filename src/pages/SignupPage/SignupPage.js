@@ -123,9 +123,6 @@ export default function SignUp() {
                 <Text css={{ color: 'red', fontSize: '12px' }}>
                   {errors.password?.message}
                 </Text>
-                <Text css={{ color: 'red', fontSize: '14px' }}>
-                  {signup.message}
-                </Text>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -139,6 +136,9 @@ export default function SignUp() {
                   {errors.password2?.message}
                 </Text>
               </Grid>
+              <Text css={{ color: 'red', fontSize: '14px' }}>
+                {signup.message}
+              </Text>
             </Grid>
             <Button
               type="submit"
