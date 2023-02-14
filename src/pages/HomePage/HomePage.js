@@ -46,7 +46,6 @@ function HomePage() {
     <div className={cx('wrapper')}>
       <Badge
         className={cx('badge')}
-        css={{ display: 'block', textAlign: 'center' }}
         size="xl"
         variant="bordered"
         enableShadow
@@ -104,7 +103,6 @@ function HomePage() {
       <Box css={{ px: '$12', mt: '$8', '@xsMax': { px: '$10' } }}>
         <Badge
           className={cx('badge')}
-          css={{ display: 'block', textAlign: 'center' }}
           size="xl"
           variant="bordered"
           enableShadow
