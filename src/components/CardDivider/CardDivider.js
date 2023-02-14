@@ -9,7 +9,9 @@ export default function CardDivider({ colorHeader, icon, textHeader, money }) {
   return (
     <Card css={{ w: '200px' }}>
       <Card.Header color="#fff" style={{ backgroundColor: colorHeader }}>
-        <Text className={cx('text-header')}>{textHeader}</Text>
+        <Text className={cx('text-header')} style={{ color: '#ffffff' }}>
+          {textHeader}
+        </Text>
       </Card.Header>
       <Card.Divider />
       <Card.Body css={{ py: '$10', height: '110px' }}>{icon}</Card.Body>

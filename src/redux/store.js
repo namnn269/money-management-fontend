@@ -22,11 +22,14 @@ import categorySlice from '~/redux/categorySlice';
 import transactionSlice from './transactionSlice';
 
 const rootReducer = withReduxStateSync(
-  combineReducers({
-    auth: authReducer,
-    categories: categorySlice,
-    transactions: transactionSlice,
-  })
+  combineReducers(
+    {
+      auth: authReducer,
+      categories: categorySlice,
+      transactions: transactionSlice,
+    },
+    window.__re
+  )
 );
 
 const persistConfig = { key: 'root', version: 1, storage };
@@ -46,6 +49,7 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(middlewares),
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 initMessageListener(store);

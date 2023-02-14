@@ -46,6 +46,7 @@ function HomePage() {
     <div className={cx('wrapper')}>
       <Badge
         className={cx('badge')}
+        css={{ display: 'block' }}
         size="xl"
         variant="bordered"
         enableShadow

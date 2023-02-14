@@ -324,18 +324,13 @@ function FormAddNewTransaction({ transaction }) {
         >
           Description
         </Text>
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <Textarea
-              {...field}
-              css={{ width: '100%' }}
-              size="xl"
-              aria-label="aria"
-            ></Textarea>
-          )}
-        />
+        <Textarea
+          {...register('description')}
+          css={{ width: '100%' }}
+          size="xl"
+          aria-label="aria"
+        ></Textarea>
+
         <Spacer />
         {showMsg && (
           <>

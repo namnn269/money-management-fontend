@@ -1,5 +1,13 @@
-import { Input, Card, Button, Text, Spacer, Radio } from '@nextui-org/react';
-import { useRef, useState } from 'react';
+import {
+  Input,
+  Card,
+  Button,
+  Text,
+  Spacer,
+  Radio,
+  Textarea,
+} from '@nextui-org/react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -19,7 +27,6 @@ function FormAddNewCategory({ updateCategory }) {
     updateCategory?.categoryStatusId || 1
   );
   const [showMsg, setShowMsg] = useState(false);
-  const categoryRef = useRef();
   const {
     handleSubmit,
     control,
@@ -45,7 +52,6 @@ function FormAddNewCategory({ updateCategory }) {
       : categoryApi.postCategory(data, user, dispatch);
     resetField('name', { defaultValue: '' });
     setShowMsg(true);
-    categoryRef.current.focus();
   };
   return (
     <form
@@ -149,27 +155,20 @@ function FormAddNewCategory({ updateCategory }) {
         }}
       ></Card>
       <Spacer />
-      <Controller
-        name="name"
-        control={control}
-        render={({ field }) => (
-          <Input
-            {...field}
-            ref={categoryRef}
-            aria-label="llp"
-            width="100%"
-            rounded
-            bordered
-            clearable={true}
-            labelLeft="Enter Category"
-            status={categoryStatusId === 1 ? 'success' : 'error'}
-            contentRightStyling={true}
-            placeholder="New category"
-            type="text"
-            size="lg"
-          />
-        )}
-      />
+      <Textarea
+        {...register('name')}
+        aria-label="aria"
+        width="100%"
+        rounded
+        bordered
+        clearable={true}
+        labelLeft="Enter Category"
+        status={categoryStatusId === 1 ? 'success' : 'error'}
+        contentRightStyling={true}
+        placeholder="New category"
+        type="text"
+        size="xl"
+      ></Textarea>
       <Spacer />
       <Text color="red">{errors.name?.message}</Text>
       {/* --------------------Color----------------- */}
