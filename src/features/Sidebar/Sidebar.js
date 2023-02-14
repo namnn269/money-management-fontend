@@ -8,10 +8,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import styles from './Sidebar.module.scss';
 import ItemOfList from '~/components/ListItemsSidebar';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
+  const user = useSelector((state) => state.auth?.login?.currentUser);
+
   return (
     <div>
       <Box className={cx('wrapper')} sx={{ flexGrow: 1 }}>
@@ -26,7 +29,7 @@ function Sidebar() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h8" color="inherit" component="div">
-              Nam
+              {user?.username}
             </Typography>
           </Toolbar>
         </AppBar>

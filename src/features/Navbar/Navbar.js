@@ -69,6 +69,14 @@ export default function NavbarTop() {
                 onAction={logoutAll}
               >
                 <Dropdown.Item
+                  key="username"
+                  withDivider
+                  color="error"
+                  textValue="username"
+                >
+                  Hello {user?.username}
+                </Dropdown.Item>
+                <Dropdown.Item
                   key="profile"
                   css={{ height: '$18' }}
                   textValue="signin"

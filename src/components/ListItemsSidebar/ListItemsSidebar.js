@@ -37,19 +37,19 @@ export default function ListItemsSidebar() {
       />
       <ItemButton
         to={routePaths.transaction}
-        content="Transaction"
+        content="New transaction"
         leftIcon={<PaidOutlinedIcon />}
         activeIcon={<PaidIcon color="primary" />}
       />
       <ItemButton
         to={routePaths.analysis}
-        content={'Analysis'}
+        content={'Analysis Chart'}
         leftIcon={<TimelineRoundedIcon />}
         activeIcon={<AutoGraphIcon color="primary" />}
       />
       <ItemButton
         to={routePaths.history}
-        content={'History'}
+        content={'Your transactions'}
         leftIcon={<HistoryIcon />}
         activeIcon={<ManageHistoryIcon color="primary" />}
       />
