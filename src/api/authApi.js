@@ -65,11 +65,12 @@ const authApi = {
     }
   },
 
-  logout: async (user, dispatch, navigate) => {
+  logout: async (user, dispatch, navigate, type) => {
     dispatch(logoutStart());
     try {
+      const url = type === 'logout-all' ? '/auth/logout-all' : '/auth/logout';
       const logoutRes = await axios.post(
-        '/auth/logout',
+        url,
         { refreshToken: user.refreshToken },
         { baseURL: process.env.REACT_APP_API_URL }
       );

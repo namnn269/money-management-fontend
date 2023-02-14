@@ -14,6 +14,11 @@ export default function NavbarTop() {
     authApi.logout(user, dispatch, navigate);
   };
 
+  const logoutAll = (e) => {
+    if (!(e === 'logoutAll')) return;
+    authApi.logout(user, dispatch, navigate, 'logout-all');
+  };
+
   return (
     <Layout>
       <Navbar isBordered variant="sticky">
@@ -61,32 +66,23 @@ export default function NavbarTop() {
               <Dropdown.Menu
                 aria-label="User menu actions"
                 color="secondary"
-                onAction={(actionKey) => console.log({ actionKey })}
+                onAction={logoutAll}
               >
-                <Dropdown.Item key="profile" css={{ height: '$18' }}>
+                <Dropdown.Item
+                  key="profile"
+                  css={{ height: '$18' }}
+                  textValue="signin"
+                >
                   <Text b color="inherit" css={{ d: 'flex' }}>
                     Signed in as
                   </Text>
                   <Text b color="inherit" css={{ d: 'flex' }}>
                     {user?.email}
+                    {!user?.verifiedEmail && '(unverified)'}
                   </Text>
                 </Dropdown.Item>
-                <Dropdown.Item key="settings" withDivider>
-                  My Settings
-                </Dropdown.Item>
-                <Dropdown.Item key="team_settings">Team Settings</Dropdown.Item>
-                <Dropdown.Item key="analytics" withDivider>
-                  Analytics
-                </Dropdown.Item>
-                <Dropdown.Item key="system">System</Dropdown.Item>
-                <Dropdown.Item key="configurations">
-                  Configurations
-                </Dropdown.Item>
-                <Dropdown.Item key="help_and_feedback" withDivider>
-                  Help & Feedback
-                </Dropdown.Item>
-                <Dropdown.Item key="logout" withDivider color="error">
-                  Log Out
+                <Dropdown.Item key="logoutAll" withDivider color="error">
+                  Logout all devices
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
