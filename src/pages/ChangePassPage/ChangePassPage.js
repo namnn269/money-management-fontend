@@ -4,12 +4,10 @@ import { Button, Container, Input, Spacer, Text } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
+
 import authApi from '~/api/authApi';
 import LoadingIcon from '~/components/LoadingIcon';
-
-const passwordRegex =
-  //   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*`])[0-9a-zA-Z~!@#$%^&*`]{8,}$/;
-  /^[A-Za-z]+[0-9]*.$/;
+import { passwordRegex } from '~/configs/constant';
 
 const schema = Yup.object().shape({
   currentPassword: Yup.string().required('Current password is not empty'),

@@ -18,19 +18,28 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import authApi from '~/api/authApi';
-import { defaultAvatar } from '~/configs/constant';
+import { defaultAvatar, passwordRegex } from '~/configs/constant';
 import { useEffect } from 'react';
 
 const theme = createTheme();
 const avatar = defaultAvatar;
-const schema = Yup.object({
+const schema = Yup.object().shape({
   username: Yup.string().trim().required('Username is required!'),
   email: Yup.string()
     .trim()
     .email('Invalid email!')
     .required('Email is required!'),
   password: Yup.string()
-    .min(2, 'Min length is 2')
+    .matches(
+      passwordRegex,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character, and at least 8 characters'
+    )
+    .required('Password is required!'),
+  password2: Yup.string()
+    .when('password', {
+      is: (val) => !!(val && val.length > 0),
+      then: Yup.string().oneOf([Yup.ref('password')], 'Password not match'),
+    })
     .required('Password is required!'),
 });
 
@@ -49,12 +58,14 @@ export default function SignUp() {
       username: '',
       email: '',
       password: '',
+      password2: '',
     },
   });
 
   const handleSignup = async (data) => {
     authApi.register({ ...data, avatar }, dispatch);
   };
+
   useEffect(() => {
     if (signup.success) reset();
   }, [signup]);
@@ -114,6 +125,18 @@ export default function SignUp() {
                 </Text>
                 <Text css={{ color: 'red', fontSize: '14px' }}>
                   {signup.message}
+                </Text>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  {...register('password2')}
+                  fullWidth
+                  name="password2"
+                  label="Confirm password"
+                  type="password"
+                />
+                <Text css={{ color: 'red', fontSize: '12px' }}>
+                  {errors.password2?.message}
                 </Text>
               </Grid>
             </Grid>
