@@ -19,7 +19,7 @@ const { default: createAxiosJwt } = require('./axiosClient');
 const transactionApi = {
   post: async (data, user, dispatch) => {
     dispatch(postTransStart());
-    const transAxios = await createAxiosJwt(user, dispatch);
+    const transAxios = createAxiosJwt(user, dispatch);
     try {
       const trans = await transAxios.post('/transactions', data);
       dispatch(postTransSuccess(trans));

@@ -19,6 +19,7 @@ import * as yup from 'yup';
 
 import styles from './FormAddNewTransaction.module.scss';
 import transactionApi from '~/api/transactionApi';
+import { dateFormat } from '~/configs/datetime';
 
 const cx = classNames.bind(styles);
 
@@ -41,7 +42,7 @@ const schema = yup.object({
 
 ///////////////////////////////////////////////////////////////////////////
 function FormAddNewTransaction({ transaction }) {
-  const today = moment(new Date()).format('yyyy-MM-DD');
+  const today = moment(new Date()).format(dateFormat);
   const dispatch = useDispatch();
   const amountRef = useRef();
   const message = useSelector((state) => state.transactions.post.message);
