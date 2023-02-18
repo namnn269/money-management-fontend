@@ -80,7 +80,7 @@ function FormAddNewTransaction({ transaction }) {
   };
 
   const handleOnSubmit = (data) => {
-    data = { ...data, date: moment(data.date).format(dateFormat) };
+    data = { ...data, date: moment(data.date).format('yyyy-MM-DD') };
     setShowMsg(true);
     resetFields();
     transaction?.id
