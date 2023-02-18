@@ -42,7 +42,7 @@ const schema = yup.object({
 
 ///////////////////////////////////////////////////////////////////////////
 function FormAddNewTransaction({ transaction }) {
-  const today = moment(new Date()).format(dateFormat);
+  const today = moment(new Date()).format('yyyy-MM-DD');
   const dispatch = useDispatch();
   const amountRef = useRef();
   const message = useSelector((state) => state.transactions.post.message);
@@ -75,12 +75,12 @@ function FormAddNewTransaction({ transaction }) {
   const resetFields = () => {
     resetField('id', { defaultValue: null });
     resetField('amount', { defaultValue: 0 });
-    resetField('categoryId', { defaultValue: 0 });
     resetField('description', { defaultValue: '' });
     amountRef.current.focus();
   };
 
   const handleOnSubmit = (data) => {
+    data = { ...data, date: moment(data.date).format(dateFormat) };
     setShowMsg(true);
     resetFields();
     transaction?.id
