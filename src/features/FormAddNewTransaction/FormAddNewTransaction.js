@@ -19,7 +19,6 @@ import * as yup from 'yup';
 
 import styles from './FormAddNewTransaction.module.scss';
 import transactionApi from '~/api/transactionApi';
-import { dateFormat } from '~/configs/datetime';
 
 const cx = classNames.bind(styles);
 
